@@ -239,7 +239,7 @@ test_that("as_properties() gives useful error messages", {
     as_properties(1)
     as_properties(list(1))
     as_properties(list(new_property(class_character)))
-    as_properties(list(x = 1))
+    as_properties(list(x = c(1, 2)))
     as_properties(list(x = class_character, x = class_character))
   })
 })

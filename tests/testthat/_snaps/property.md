@@ -143,7 +143,7 @@
     Error <simpleError>
       `property[[1]]` is missing a name
     Code
-      as_properties(list(x = 1))
+      as_properties(list(x = c(1, 2)))
     Error <simpleError>
       Can't convert `property$x` to a valid class. Class specification must be an R7 class object, the result of `new_S3_class()`, an S4 class object, or a base class, not a <double>.
     Code
