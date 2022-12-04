@@ -20,8 +20,6 @@ as_class <- function(x, arg = deparse(substitute(x))) {
 
   if (is_foundation_class(x)) {
     x
-  } else if (is_literal_value(x)) {
-    new_literal_class(x)
   } else if (is.null(x)) {
     # NULL is handled specially because you can't assign a class to it,
     # so it can't be wrapped in new_base_class
