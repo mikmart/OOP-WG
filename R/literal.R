@@ -47,7 +47,7 @@ str.R7_literal_class <- function(object, ..., nest.lev = 0) {
 #' @examples
 #' class_literal("GET")
 #'
-#' class_http_method <- literal_union("GET", "POST", "PUT", "DELETE")
+#' class_http_method <- class_literal_union("GET", "POST", "PUT", "DELETE")
 #' class_http_method
 #'
 #' Request <- new_class("Request", properties = list(method = class_http_method))
@@ -70,6 +70,6 @@ class_literal <- function(value) {
 #' @param ... Literal values to construct a class union for.
 #' @rdname literal_classes
 #' @export
-literal_union <- function(...) {
+class_literal_union <- function(...) {
   do.call("new_union", lapply(list(...), class_literal))
 }

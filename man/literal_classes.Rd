@@ -3,12 +3,12 @@
 \name{literal_classes}
 \alias{literal_classes}
 \alias{class_literal}
-\alias{literal_union}
+\alias{class_literal_union}
 \title{Literal classes}
 \usage{
 class_literal(value)
 
-literal_union(...)
+class_literal_union(...)
 }
 \arguments{
 \item{value}{A literal value to construct a class for.}
@@ -23,7 +23,7 @@ set of valid values.
 \examples{
 class_literal("GET")
 
-class_http_method <- literal_union("GET", "POST", "PUT", "DELETE")
+class_http_method <- class_literal_union("GET", "POST", "PUT", "DELETE")
 class_http_method
 
 Request <- new_class("Request", properties = list(method = class_http_method))
