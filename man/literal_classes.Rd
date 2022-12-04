@@ -18,7 +18,8 @@ class_literal_union(...)
 \description{
 Literal classes represent objects whose class is determined by their literal
 value. They are mostly useful in class unions, where they can model a finite
-set of valid values.
+set of valid values. Literal classes can also be used to created methods
+specialized to particular values.
 }
 \examples{
 class_literal("GET")
@@ -26,8 +27,16 @@ class_literal("GET")
 class_http_method <- class_literal_union("GET", "POST", "PUT", "DELETE")
 class_http_method
 
+# Restrict the values of a class property with a literal union
 Request <- new_class("Request", properties = list(method = class_http_method))
 Request
 Request(method = "GET")
 try(Request(method = "foo"))
+
+# Create a specialized method with a literal class
+foo <- new_generic("foo", "x")
+method(foo, class_integer) <- function(x) "It's an integer."
+foo(1L)
+method(foo, class_literal(1L)) <- function(x) "It's a one."
+foo(1L)
 }
