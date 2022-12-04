@@ -5,13 +5,13 @@
 # method lookup fails with informative messages
 
     Can't find method for generic `foo()` with dispatch classes:
-    - x: logical
+    - x: TRUE, logical
     - y: MISSING
 
 ---
 
     Can't find method for generic `foo()` with dispatch classes:
-    - x: logical
+    - x: TRUE, logical
     - y: list
 
 ---
