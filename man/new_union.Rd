@@ -2,12 +2,9 @@
 % Please edit documentation in R/union.R
 \name{new_union}
 \alias{new_union}
-\alias{new_literal_union}
 \title{Define a class union}
 \usage{
 new_union(...)
-
-new_literal_union(...)
 }
 \arguments{
 \item{...}{The classes to include in the union. See \code{\link[=as_class]{as_class()}} for

@@ -68,9 +68,3 @@ class_flatten <- function(x) {
 
 # See .onLoad() for definition
 base_unions <- list()
-
-#' @rdname new_union
-#' @export
-new_literal_union <- function(...) {
-  do.call("new_union", lapply(list(...), class_literal))
-}

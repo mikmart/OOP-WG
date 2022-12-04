@@ -39,12 +39,37 @@ str.R7_literal_class <- function(object, ..., nest.lev = 0) {
 
 #' Literal classes
 #'
-#' @param value A literal value to construct a class for.
+#' @description
+#' Literal classes represent objects whose class is determined by their literal
+#' value. They are mostly useful in class unions, where they can model a finite
+#' set of valid values.
 #'
+#' @examples
+#' class_literal("GET")
+#'
+#' class_http_method <- literal_union("GET", "POST", "PUT", "DELETE")
+#' class_http_method
+#'
+#' Request <- new_class("Request", properties = list(method = class_http_method))
+#' Request
+#' Request(method = "GET")
+#' try(Request(method = "foo"))
+#' @name literal_classes
+NULL
+
+#' @param value A literal value to construct a class for.
+#' @rdname literal_classes
 #' @export
 class_literal <- function(value) {
   if (!is_literal_value(value)) {
     stop("`value` must be a dimensionless length 1 atomic vector.", call. = FALSE)
   }
   new_literal_class(value)
+}
+
+#' @param ... Literal values to construct a class union for.
+#' @rdname literal_classes
+#' @export
+literal_union <- function(...) {
+  do.call("new_union", lapply(list(...), class_literal))
 }
