@@ -20,6 +20,8 @@ as_class <- function(x, arg = deparse(substitute(x))) {
 
   if (is_foundation_class(x)) {
     x
+  } else if (is_literal_value(x)) {
+    new_literal_class(x)
   } else if (is.null(x)) {
     # NULL is handled specially because you can't assign a class to it,
     # so it can't be wrapped in new_base_class
@@ -38,7 +40,8 @@ is_foundation_class <- function(x) {
     is_base_class(x) ||
     is_S3_class(x) ||
     is_class_missing(x) ||
-    is_class_any(x)
+    is_class_any(x) ||
+    is_literal_class(x)
 }
 
 class_type <- function(x) {
@@ -48,6 +51,8 @@ class_type <- function(x) {
     "missing"
   } else if (is_class_any(x)) {
     "any"
+  } else if (is_literal_class(x)) {
+    "literal"
   } else if (is_base_class(x)) {
     "R7_base"
   } else if (is_class(x)) {
@@ -68,6 +73,7 @@ class_friendly <- function(x) {
     NULL = "NULL",
     missing = "a missing argument",
     any = "any type",
+    literal = "a literal value",
     S4 = "an S4 class",
     R7 = "an R7 class",
     R7_base = "a base type",
@@ -80,6 +86,7 @@ class_constructor <- function(.x, ...) {
   switch(class_type(.x),
     NULL = function() NULL,
     any = function() NULL,
+    literal = .x$constructor,
     S4 = function(...) methods::new(.x, ...),
     R7 = .x,
     R7_base = .x$constructor,
@@ -113,6 +120,7 @@ class_desc <- function(x) {
     NULL = "<NULL>",
     missing = "<MISSING>",
     any = "<ANY>",
+    literal = x$class,
     S4 = paste0("S4<", x@className, ">"),
     R7 = paste0("<", R7_class_name(x), ">"),
     R7_base = paste0("<", x$class, ">"),
@@ -131,6 +139,7 @@ class_dispatch <- function(x) {
     NULL = "NULL",
     missing = "MISSING",
     any = character(),
+    literal = x$class,
     S4 = S4_class_dispatch(methods::extends(x)),
     R7 = c(R7_class_name(x), class_dispatch(x@parent)),
     R7_base = c(x$class, "R7_object"),
@@ -145,6 +154,7 @@ class_register <- function(x) {
     NULL = "NULL",
     missing = "MISSING",
     any = "ANY",
+    literal = x$class,
     S4 = S4_class_name(x),
     R7 = R7_class_name(x),
     R7_base = x$class,
@@ -159,6 +169,7 @@ class_deparse <- function(x) {
     "NULL" = "NULL",
     missing = "class_missing",
     any = "class_any",
+    literal = paste0("class_literal(", x$class, ")"),
     S4 = as.character(x@className),
     R7 = R7_class_name(x),
     R7_base = paste0("class_", x$class),
@@ -175,6 +186,7 @@ class_inherits <- function(x, what) {
     "NULL" = is.null(x),
     missing = FALSE,
     any = TRUE,
+    literal = identical(x, what$value),
     S4 = isS4(x) && methods::is(x, what),
     R7 = inherits(x, "R7_object") && inherits(x, R7_class_name(what)),
     R7_base = what$class == base_class(x),
@@ -193,12 +205,15 @@ obj_type <- function(x) {
     "S4"
   } else if (is.object(x)) {
     "S3"
+  } else if (is_literal_value(x)) {
+    "literal"
   } else {
     "base"
   }
 }
 obj_desc <- function(x) {
   switch(obj_type(x),
+   literal = ,
    base = paste0("<", typeof(x), ">"),
    S3 = paste0("S3<", paste(class(x), collapse = "/"), ">"),
    S4 = paste0("S4<", class(x), ">"),
@@ -207,6 +222,7 @@ obj_desc <- function(x) {
 }
 obj_dispatch <- function(x) {
   switch(obj_type(x),
+    literal = c(deparse(x), base_class(x)),
     base = base_class(x),
     S3 = class(x),
     S4 = S4_class_dispatch(methods::getClass(class(x))),

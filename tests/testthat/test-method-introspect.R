@@ -15,7 +15,7 @@ describe("method introspection", {
 
       foo <- new_generic("foo", "x")
       method(foo)
-      method(foo, 1)
+      method(foo, c(1, 2))
       method(foo, new_union(class_integer, class_double))
 
       foo2 <- new_generic("foo2", c("x", "y"))

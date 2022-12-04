@@ -189,7 +189,7 @@ test_that("can work with S4 classes", {
 
 test_that("as_class gives informative errors", {
   expect_snapshot(error = TRUE, {
-    as_class("foo")
-    as_class(TRUE)
+    as_class(letters)
+    as_class(1:5)
   })
 })
