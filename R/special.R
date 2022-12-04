@@ -45,7 +45,3 @@ str.R7_any <- function(object, ..., nest.lev = 0) {
   cat(if (nest.lev > 0) " ")
   print(object)
 }
-
-is_class_literal <- function(x) {
-  length(x) == 1 && (is.character(x) || is.numeric(x) || is.logical(x))
-}
